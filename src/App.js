@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import ItemList from './components/items/ItemList';
 import ItemForm from './components/items/ItemForm';
+import FilterBar from './components/shared/FilterBar';
 // import Item from './components/items/Item';
 
 
@@ -13,7 +14,11 @@ class App extends Component {
     { id: 5, inv: "Sourkrout", price: 5, quantity: 8, healthy: true, organic: false, complete: true },
     { id: 6, inv: "Kimchi", price: 6, quantity: 5, healthy: true, organic: false, complete: true },
 
-  ]}
+  ], filter: 'All'}
+
+  setFilter = (filter) => {
+    this.setState({ filter })
+  }
 
   // helper function to gen id
 
@@ -47,21 +52,46 @@ class App extends Component {
   }
 
 
+visibleItems = () => {
+  const { items, filter } = this.state
+  // const items = this.state.items
+  // const filter = this.state.filter
+  switch(filter) {
+    case 'Active':
+      return items.filter( i => !i.complete)
+    case 'Complete':
+      return items.filter( i => i.complete)
+    default: 
+       return items
+  }
+
+}
 
 
 
   render() {
-    const { items } = this.state
+    const { items, filter } = this.state
     return (
       <>
       <h1>Katie's Grocery List</h1>
-      <br/>
+      <br />
       <ItemForm addItem={this.addItem} /> 
+      <br />
+      <FilterBar filter={filter} setFilter={this.setFilter} /> 
+      <br />
+
+
+    {
+      items.length > 0 ?
       <ItemList 
-      items={items} 
+      items={this.visibleItems()} 
       name="Items" 
       completeUpdate={this.completeUpdate}
        />
+       :
+       <p>No items to show</p>
+       
+    }
       </>
     )
   }

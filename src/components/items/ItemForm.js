@@ -1,7 +1,8 @@
 import { Component } from 'react';
+import Item from './Item';
 
 class ItemForm extends Component {
-    state = { inv: "", price: "", quantity: "", healthy: true, complete: false}
+    state = { inv: "", price: "", quantity: "", healthy: true, organic: true, complete: false}
     handleChange = (e) => {
         const { name, value } =  e.target
         this.setState({ [name]: value })
@@ -11,12 +12,12 @@ class ItemForm extends Component {
         e.preventDefault()
         // function to add the items in state to the list of items
         this.props.addItem(this.state)
-        this.setState({ inv: "", price: "", quantity: "", healthy: true, complete: false })
+        this.setState({ inv: "", price: "", quantity: "", healthy: true, organic: true, complete: false })
         
         
     }
     render() {
-        const { inv, price, quantity, healthy } = this.state
+        const { inv, price, quantity, healthy, organic } = this.state
         return (
             <form onSubmit={this.handleSubmit} >
                 <input
@@ -50,10 +51,18 @@ class ItemForm extends Component {
                     <input
                     type='checkbox'  
                     name='healthy' 
-                    value={healthy}
+                    defaultChecked={healthy.true}
                     onChange={this.handleChange}
             />
-                    
+                    <label for="organic"> Organic</label>
+                
+                    <input
+                    type='checkbox'  
+                    name='organic' 
+                    value={organic.true}
+                    onChange={this.handleChange}
+            />
+
 
                     <br/>
                     <br/>
